@@ -4,6 +4,16 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "articles#index"
 
+  scope module: :v2, constraints: ApiVersion.new('v2') do
+    resources :todos, only: :index
+  end
+
+  scope module: :v1, constraints: ApiVersion.new('v1', true) do
+    resources :todos do
+      resources :items
+    end
+  end
+
   resources :todos do
     resources :items
   end
